@@ -112,7 +112,19 @@ function groupByVenue(entries, item) {
   return list;
 }
 
-function ScoreBadge({ value, size = "normal" }) {
+function formatEntryDate(isoString) {
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  const sameYear = date.getFullYear() === now.getFullYear();
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: sameYear ? undefined : "numeric",
+  });
+}function ScoreBadge({ value, size = "normal" }) {
   const display = (value / 10).toFixed(1);
   return (
     <span className={`ba-score ba-score--${size}`}>
@@ -437,7 +449,8 @@ function VenueRow({ rank, venue, item, expanded, onToggle, raterName, onEdit, on
               return (
                 <div className="ba-entry" key={e.id}>
                   <div className="ba-entry-main">
-                    <span className="ba-entry-rater">{e.rater || "Anonymous"}</span>
+                    <span className="ba-entry-rater">{e.rater || "Anonymous"}</span><span className="ba-entry-date">{formatEntryDate(e.created_at)}</span>
+                    <span className="ba-entry-date">{formatEntryDate(e.created_at)}</span>
                     <ScoreBadge value={e.scores.reduce((a, b) => a + b, 0)} />
                     {isMine && (
                       <button className="ba-entry-edit" onClick={() => onEdit(e)} aria-label="Edit your rating">
@@ -860,7 +873,8 @@ export default function App() {
         .ba-entries { margin-top: 4px; padding-top: 10px; border-top: 1px dashed var(--paper-dim); display: flex; flex-direction: column; gap: 10px; }
         .ba-entry { display: flex; flex-direction: column; gap: 3px; }
         .ba-entry-main { display: flex; align-items: center; gap: 8px; }
-        .ba-entry-rater { font-size: 12.5px; font-weight: 600; color: var(--ink); flex: 1; }
+        .ba-entry-rater { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+.ba-entry-date { font-size: 11px; color: var(--ink-soft); flex: 1; }
         .ba-entry-edit {
           background: none;
           border: none;
