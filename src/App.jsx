@@ -449,8 +449,8 @@ function VenueRow({ rank, venue, item, expanded, onToggle, raterName, onEdit, on
               return (
                 <div className="ba-entry" key={e.id}>
                   <div className="ba-entry-main">
-                    <span className="ba-entry-rater">{e.rater || "Anonymous"}</span><span className="ba-entry-date">{formatEntryDate(e.created_at)}</span>
-                    <span className="ba-entry-date">{formatEntryDate(e.created_at)}</span>
+                  <span className="ba-entry-rater">{e.rater || "Anonymous"}</span>
+                  <span className="ba-entry-date">{formatEntryDate(e.created_at)}</span>
                     <ScoreBadge value={e.scores.reduce((a, b) => a + b, 0)} />
                     {isMine && (
                       <button className="ba-entry-edit" onClick={() => onEdit(e)} aria-label="Edit your rating">
